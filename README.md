@@ -1,8 +1,10 @@
 # CPU Simulator 
 
-## 8 bit binary implementation of Little Man Computer
+### 8 bit binary implementation of Little Man Computer
 
 This is a modified version of [pddring/cpu-simulator](https://github.com/pddring/cpu-simulator).
+
+You can try it out [here](https://mykbamberg.github.io/cpu-simulator/).
 
 ## Licensing
 
