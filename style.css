@@ -121,70 +121,31 @@ body {
     pointer-events: none;
     z-index: 100;
 }
-
 .edit-text {
     text-align: center;
-}
-#run_buttons {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    z-index: 300;
-}
-
-#hint {
-    position: fixed;
-    bottom: 0px;
-    left: 0px;
-    width: 80%;
-    border: 2px solid #000;
-    border-radius: 3px;
-    z-index: 250;
-    padding: 10px;
-    text-align: center;
-    font-size: 1em;
-    pointer-events: none;
-    background-color: white;
-}
-
-.hint-hidden {
-    opacity: 0;
-}
-
-#btn_toggle_hint {
-    position: fixed;
-    left: 5px;
-    bottom: 5px;
-    z-index: 350;
 }
 
 .fetch_decode_execute {
     border-radius: 3px;
-    padding: 10px;
-    margin: 10px;
+    padding: 3px;
+    margin: 3px;
 }
 
 .hint_name {
     font-weight: bold;
-    color: #F00;
+    color: #C00;
 }
 
 .fetch {
-    background-color: #F00;
+    background-color: #F77;
 }
 
 .decode {
-    background-color: #0F0;
+    background-color: #6F6;
 }
 
 .execute {
-    background-color: #00F;
-    color: #FFF;
-}
-
-@keyframes highlight {
-from {box-shadow:  0px 0px 15px rgba(255,0,0,0.5);}
-to {box-shadow:  0px 0px 30px rgba(255,0,0,1);}
+    background-color: #88F;
 }
 
 .active {
@@ -209,6 +170,8 @@ to {box-shadow:  0px 0px 30px rgba(255,0,0,1);}
     vertical-align: middle;
 }
 
-#ad {
-    text-align: center;
+.wrapper {
+    max-width: 1650px;
+    margin: 0 auto;
+    width: 100%;
 }

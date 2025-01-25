@@ -18,8 +18,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 
     </head>
-    <body>
-
+    <body><div class="wrapper">
         <div class="box">
             <h1><i class="fa fa-microchip"></i> CPU Simulator</h1>
         </div>
@@ -42,6 +41,11 @@
 
             <button type="button" class="btn btn-secondary" id="btn_import_export" data-toggle="modal" data-target="#modal_export"><i class="fa fa-save"></i> Import / Export</button>
 
+            <div class="btn-group" role="group" aria-label="Run">
+                <button type="button" class="btn btn-secondary" id="btn_step"><i class="fa fa-step-forward"></i> Step</button>
+                <button type="button" class="btn btn-secondary" id="btn_run"><i class="fa fa-play"></i> Run</button>
+            </div>
+
             <span class="form-group">
                 <label for="run_speed">Run speed:
                     <select class="form-control" id="run_speed">
@@ -54,19 +58,13 @@
                     </select>
                 </label>
             </span>
-
-            <div id="run_buttons" class="btn-group" role="group" aria-label="Run">
-                <button type="button" class="btn btn-secondary" id="btn_step"><i class="fa fa-step-forward"></i> Step</button>
-                <button type="button" class="btn btn-secondary" id="btn_run"><i class="fa fa-play"></i> Run</button>
-            </div>
-
-            <button type="button" class="btn btn-secondary" id="btn_toggle_hint"><i class="fa fa-lightbulb-o"></i></button>
-            <div id="hint"><span id="hint_text">Press the step button to see each stage of the fetch, decode execute cycle</span></div>
         </div>
 
-        <div id="cpu" class="box">
+        <div id="hint" class="box">
+            <span id="hint_text">Press the step button to see each stage of the fetch, decode execute cycle</span>
         </div>
 
+        <div id="cpu" class="box"></div>
 
         <div id="modal_change_value" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -84,7 +82,6 @@
                         <button type="button" class="btn" data-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -134,5 +131,5 @@
 
             </div>
         </div>
-    </body>
+        </div></body>
 </html>

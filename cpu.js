@@ -642,10 +642,6 @@ var cpu = {
             window.location.search = "?ram=" + bytes;
         });
 
-        $('#btn_toggle_hint').click(function(e) {
-            $('#hint').toggleClass('hint-hidden');
-        });
-
         $('.btn_values').click(function(e) {
             const mode = e.currentTarget.id.split("_")[2];
 
