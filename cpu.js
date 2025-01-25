@@ -609,6 +609,7 @@ var cpu = {
 
         $('#btn_run').click(function() {
             if(cpu.running && cpu.nextTimeout) {
+                cpu.running = false;
                 clearTimeout(cpu.nextTimeout);
             } else {
                 cpu.running = true;
