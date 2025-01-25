@@ -489,15 +489,20 @@ var cpu = {
         var params = window.location.search.substr(1);
         var ram = [];
         var initZeros = true;
+
         if(ram = params.replace("ram=", "")) {
             if(ram = ram.match(/([0-9a-fA-F]{2})/g)) {
                 initZeros = false;
             }
         }
+
         for(var address = 0; address < 16; address++) {
             cpu.ram[address] = initZeros ? 0 : cpu.hex2dec(ram[address]);
-            html += '<tr><td id="ram_address_' + address + '" class="value value_decimal">' + address + '</td><td id="ram_value_' + address + '" class="value value_decimal editable" data-description="Memory address ' + address + '">' + cpu.ram[address] + '</td></tr>';
+            html += '<tr><td id="ram_address_' + address + '" class="value value_decimal'
+            if (address == 0) html += ' current_instruction';
+            html += '">' + address + '</td><td id="ram_value_' + address + '" class="value value_decimal editable" data-description="Memory address ' + address + '">' + cpu.ram[address] + '</td></tr>';
         }
+
         html += '</table>';
         html += '</div>';
 
@@ -547,7 +552,9 @@ var cpu = {
             cpu.registers.acc = cpu.registers.cir = cpu.registers.mar = cpu.registers.mdr = cpu.registers.pc = 0;
             cpu.showHint("CPU registers and execution state reset to zero")
             $('.current_instruction').removeClass('current_instruction');
+            $('#ram_address_0').addClass('current_instruction');
             $('.running').removeClass('running');
+            $('.active').removeClass('active');
             cpu.updateValues();
         });
 

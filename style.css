@@ -47,6 +47,15 @@ a:hover {
     background-color: #FFF;
 }
 
+#hint {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 1.5em;
+    min-height: calc(3em + 6px);
+    max-height: calc(3em + 6px);
+    overflow: scroll;
+}
+
 #cpu {
     position: relative;
     height: 55em;
