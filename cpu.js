@@ -463,7 +463,7 @@ var cpu = {
         var reverse_arrow = { ...double_arrow };
         delete reverse_arrow["arrow-end"];
 
-        connect({e:ALU, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, single_arrow);
+        connect({e:ALU, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, reverse_arrow);
         connect({e:PC, h:"right", v:"middle"}, {e:MAR, h:"left", v:"middle"}, single_arrow);
         connect({e:PC, h:"middle", v:"bottom"}, {e:decodeUnit, v:"top"}, reverse_arrow);
         connect({e:decodeUnit, h:"right", v:"top"}, {e:MAR, h:"left", v:"bottom"}, single_arrow);
