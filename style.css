@@ -2,6 +2,15 @@ body {
     font-family: 'Roboto Mono', monospace;
 }
 
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    color: #24A;
+}
+
 .box {
     padding: 10px;
     border-radius: 3px;
@@ -176,11 +185,6 @@ body {
     width: 100%;
 }
 
-a {
-    text-decoration: none;
-    color: #333;
-}
-
-a:hover {
-    color: #24A;
+.running {
+    background-color: #F77;
 }

@@ -102,6 +102,7 @@ var cpu = {
                 setState(7, "Execute", "The CPU has halted so the *Control Unit* doesn't fetch any more instructions");
                 $('.active').removeClass('active');
                 cpu.running = false;
+                $('.running').removeClass('running');
                 break;
 
             //The *opcode* 0001 means add the value in the *Accumulator* register to the data stored in memory at the address specified by the *operand*"
@@ -541,9 +542,12 @@ var cpu = {
 
         $('#btn_reset_cpu').click(function() {
             cpu.state = 0;
+            cpu.running = false;
+            clearTimeout(cpu.nextTimeout);
             cpu.registers.acc = cpu.registers.cir = cpu.registers.mar = cpu.registers.mdr = cpu.registers.pc = 0;
             cpu.showHint("CPU registers and execution state reset to zero")
             $('.current_instruction').removeClass('current_instruction');
+            $('.running').removeClass('running');
             cpu.updateValues();
         });
 
@@ -611,9 +615,13 @@ var cpu = {
             if(cpu.running && cpu.nextTimeout) {
                 cpu.running = false;
                 clearTimeout(cpu.nextTimeout);
+                $(this).removeClass('running');
             } else {
                 cpu.running = true;
                 cpu.step();
+                if (cpu.running) {
+                    $(this).addClass('running');
+                }
             }
         });
 
