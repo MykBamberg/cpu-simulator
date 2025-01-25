@@ -175,3 +175,12 @@ body {
     margin: 0 auto;
     width: 100%;
 }
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover {
+    color: #24A;
+}
