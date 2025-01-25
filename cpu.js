@@ -469,8 +469,8 @@ var cpu = {
         connect({e:decodeUnit, h:"right", v:"top"}, {e:MAR, h:"left", v:"bottom"}, single_arrow);
         connect({e:MDR, h:"middle", v:"bottom"}, {e:CIR, h:"middle", v:"top"}, single_arrow);
         connect({e:CIR, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, single_arrow);
-        connect({e:MDR, h:"20%", v:"top"}, {e:ALU, v:"bottom"}, single_arrow);
-        connect({e:ACC, h:"20%", v:"bottom"}, {e:ALU, v:"top"}, double_arrow);
+        connect({e:ALU, h:"middle", v:"bottom"}, {e:MDR, v:"top"}, reverse_arrow);
+        connect({e:ALU, h:"middle", v:"top"}, {e:ACC, v:"bottom"}, double_arrow);
         connect({e:MDR, h:"80%", v:"top"}, {e:ACC, h:"80%", v:"bottom"}, double_arrow);
 
         single_arrow["stroke"] = double_arrow["stroke"] ="#ff6666";
@@ -478,7 +478,7 @@ var cpu = {
 
         connect({e:CPU, h:"right", v:"5%"}, {e: RAM, h:"left"}, single_arrow, "Address bus", {"font-size": "16px"});
         connect({e:CPU, h:"right", v:"56%"}, {e: RAM, h:"left"}, double_arrow, "Data bus", {"font-size": "16px"});
-        connect({e:CPU, h:"right", v:"85%"}, {e: RAM, h:"left"}, double_arrow, "Control bus", {"font-size": "16px"});
+        connect({e:CPU, h:"right", v:"93%"}, {e: RAM, h:"left"}, double_arrow, "Control bus", {"font-size": "16px"});
     },
 
     init: function(jqCPU) {

@@ -116,12 +116,12 @@ a:hover {
     text-align: center;
     padding: 10px;
     display: block;
-    width: 30%;
+    width: 25%;
     border: 1px solid #000;
 }
 
 #alu {
-    left: 50%;
+    left: 60%;
     top: 35%;
     background-color: #9BF;
 }
