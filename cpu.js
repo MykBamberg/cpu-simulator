@@ -377,22 +377,17 @@ var cpu = {
         paper.clear();
 
         function connect(from, to, attributes, label, labelAttributes) {
-
             function getX(i, a) {
                 switch(a){
                     case 'left':
                         return i.position().left;
-                        break;
                     case 'right':
                         return i.position().left + i.outerWidth(true);
-                        break;
                     case 'middle':
                         return i.position().left + (i.outerWidth(true) / 2);
-                        break;
                     default:
                         var percentage = parseInt(a.replace("%", ""));
                         return i.position().left + (i.outerWidth(true) * percentage / 100);
-                        break;
                 }
             }
 
@@ -400,13 +395,10 @@ var cpu = {
                 switch(a) {
                     case 'top':
                         return i.position().top;
-                        break;
                     case 'bottom':
                         return i.position().top + i.outerHeight(true);
-                        break;
                     case 'middle':
                         return i.position().top + (i.outerHeight(true) / 2);
-                        break;
                     default:
                         var percentage = parseInt(a.replace("%", ""));
                         return i.position().top + (i.outerHeight(true) * percentage / 100);
@@ -450,35 +442,42 @@ var cpu = {
         var CPU = $('.cpu');
         var RAM = $('.ram');
 
-        var double_arrow = {
+        const darkModeColors = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        var doubleArrow = {
             "stroke-width": 8,
-            "stroke": "#666666",
+            "stroke": darkModeColors ? "#999" : "#666",
             "arrow-end": "block",
             "arrow-start": "block",
             "stroke-linecap": "round"
         };
 
-        var single_arrow = { ...double_arrow };
-        delete single_arrow["arrow-start"];
-        var reverse_arrow = { ...double_arrow };
-        delete reverse_arrow["arrow-end"];
+        var singleArrow = { ...doubleArrow };
+        delete singleArrow["arrow-start"];
+        var reverseArrow = { ...doubleArrow };
+        delete reverseArrow["arrow-end"];
 
-        connect({e:ALU, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, reverse_arrow);
-        connect({e:PC, h:"right", v:"middle"}, {e:MAR, h:"left", v:"middle"}, single_arrow);
-        connect({e:PC, h:"middle", v:"bottom"}, {e:decodeUnit, v:"top"}, reverse_arrow);
-        connect({e:decodeUnit, h:"right", v:"top"}, {e:MAR, h:"left", v:"bottom"}, single_arrow);
-        connect({e:MDR, h:"middle", v:"bottom"}, {e:CIR, h:"middle", v:"top"}, single_arrow);
-        connect({e:CIR, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, single_arrow);
-        connect({e:ALU, h:"middle", v:"bottom"}, {e:MDR, v:"top"}, reverse_arrow);
-        connect({e:ALU, h:"middle", v:"top"}, {e:ACC, v:"bottom"}, double_arrow);
-        connect({e:MDR, h:"80%", v:"top"}, {e:ACC, h:"80%", v:"bottom"}, double_arrow);
+        connect({e:ALU, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, reverseArrow);
+        connect({e:PC, h:"right", v:"middle"}, {e:MAR, h:"left", v:"middle"}, singleArrow);
+        connect({e:PC, h:"middle", v:"bottom"}, {e:decodeUnit, v:"top"}, reverseArrow);
+        connect({e:decodeUnit, h:"right", v:"top"}, {e:MAR, h:"left", v:"bottom"}, singleArrow);
+        connect({e:MDR, h:"middle", v:"bottom"}, {e:CIR, h:"middle", v:"top"}, singleArrow);
+        connect({e:CIR, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, singleArrow);
+        connect({e:ALU, h:"middle", v:"bottom"}, {e:MDR, v:"top"}, reverseArrow);
+        connect({e:ALU, h:"middle", v:"top"}, {e:ACC, v:"bottom"}, doubleArrow);
+        connect({e:MDR, h:"80%", v:"top"}, {e:ACC, h:"80%", v:"bottom"}, doubleArrow);
 
-        single_arrow["stroke"] = double_arrow["stroke"] ="#ff6666";
-        single_arrow["stroke-width"] = double_arrow["stroke-width"] = 18;
+        singleArrow["stroke"] = doubleArrow["stroke"] = darkModeColors ? "#825" : "#f66";
+        singleArrow["stroke-width"] = doubleArrow["stroke-width"] = 18;
 
-        connect({e:CPU, h:"right", v:"5%"}, {e: RAM, h:"left"}, single_arrow, "Address bus", {"font-size": "16px"});
-        connect({e:CPU, h:"right", v:"56%"}, {e: RAM, h:"left"}, double_arrow, "Data bus", {"font-size": "16px"});
-        connect({e:CPU, h:"right", v:"93%"}, {e: RAM, h:"left"}, double_arrow, "Control bus", {"font-size": "16px"});
+        const labelAttributes = {
+            "font-size": "16px",
+            "fill": darkModeColors ? "#eee" : "#333"
+        };
+
+        connect({e:CPU, h:"right", v:"5%"}, {e: RAM, h:"left"}, singleArrow, "Address bus", labelAttributes);
+        connect({e:CPU, h:"right", v:"56%"}, {e: RAM, h:"left"}, doubleArrow, "Data bus", labelAttributes);
+        connect({e:CPU, h:"right", v:"93%"}, {e: RAM, h:"left"}, doubleArrow, "Control bus", labelAttributes);
     },
 
     init: function(jqCPU) {
@@ -695,5 +694,15 @@ var cpu = {
 };
 
 $(function() {
-    cpu.init("#cpu")
+    cpu.init("#cpu");
+});
+
+$(function() {
+    function updateTheme() {
+        const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+    }
+
+    updateTheme();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateTheme);
 });

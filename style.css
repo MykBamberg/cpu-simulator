@@ -1,14 +1,62 @@
+:root {
+    --bg-color: #fff;
+    --text-color: #333;
+    --link-hover-color: #48c;
+    --border-color: #000;
+    --ram-bg: #cff;
+    --decode-bg: #ffc;
+    --cpu-bg: #fcc;
+    --alu-bg: #9bf;
+    --cu-bg: #6c5;
+    --hint-name-color: #c00;
+    --fetch-bg: #f77;
+    --decode-box-bg: #6f6;
+    --execute-bg: #88f;
+    --active-outline: #f66;
+    --table-bg: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-color: #222;
+        --text-color: #eee;
+        --link-hover-color: #9cd;
+        --border-color: #666;
+        --ram-bg: #345;
+        --decode-bg: #355;
+        --cpu-bg: #323;
+        --alu-bg: #25a;
+        --cu-bg: #497;
+        --hint-name-color: #f66;
+        --fetch-bg: #744;
+        --decode-box-bg: #474;
+        --execute-bg: #447;
+        --active-outline: #f66;
+        --table-bg: #333;
+    }
+}
+
 body {
     font-family: 'Roboto Mono', monospace;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
 a {
     text-decoration: none;
-    color: #333;
+    color: var(--text-color);
 }
 
 a:hover {
-    color: #24A;
+    color: var(--link-hover-color);
+}
+
+h2,h3,h4 {
+    margin-bottom: 1em;
+}
+
+.btn-secondary {
+    margin: 2px 0px 2px 0px;
 }
 
 .box {
@@ -16,6 +64,7 @@ a:hover {
     border-radius: 3px;
     margin: 5px;
 }
+
 .ram {
     position: absolute;
     bottom: 0px;
@@ -23,20 +72,22 @@ a:hover {
     right: 10px;
     width: min(30%, 400px);
     overflow-y: scroll;
-    border: 2px solid #000;
+    border: 2px solid var(--border-color);
     border-radius: 3px;
     margin: 10px;
     padding: 10px;
-    background-color: #CFF;
+    background-color: var(--ram-bg);
 }
+
 .ram table {
-    background-color: #FFF;
+    background-color: var(--table-bg);
 }
+
 .decode_unit {
     position: absolute;
     top: 20%;
-    background-color: #FFC;
-    border: 2px solid #000;
+    background-color: var(--decode-bg);
+    border: 2px solid var(--border-color);
     padding: 10px;
     overflow-y: scroll;
     bottom: 0px;
@@ -44,7 +95,7 @@ a:hover {
 }
 
 .decode_unit table {
-    background-color: #FFF;
+    background-color: var(--table-bg);
 }
 
 #hint {
@@ -68,9 +119,9 @@ a:hover {
     padding: 10px;
     margin: 10px;
     width: min(50%, 650px);
-    border: 2px solid #000;
+    border: 2px solid var(--border-color);
     border-radius: 3px;
-    background-color:#FCC;
+    background-color: var(--cpu-bg);
     bottom: 0px;
 }
 .value {
@@ -80,8 +131,8 @@ a:hover {
 .register {
     position: absolute;
     width: 30%;
-    background-color: #FFF;
-    border: 1px solid #000;
+    background-color: var(--table-bg);
+    border: 1px solid var(--border-color);
     text-align: center;
     z-index: 200;
 }
@@ -123,13 +174,13 @@ a:hover {
 #alu {
     left: 60%;
     top: 35%;
-    background-color: #9BF;
+    background-color: var(--alu-bg);
 }
 
 #cu {
     right: 10px;
     bottom: 10px;
-    background-color: #6C5;
+    background-color: var(--cu-bg);
 }
 
 #drawing {
@@ -139,6 +190,7 @@ a:hover {
     pointer-events: none;
     z-index: 100;
 }
+
 .edit-text {
     text-align: center;
 }
@@ -151,24 +203,24 @@ a:hover {
 
 .hint_name {
     font-weight: bold;
-    color: #C00;
+    color: var(--hint-name-color);
 }
 
 .fetch {
-    background-color: #F77;
+    background-color: var(--fetch-bg);
 }
 
 .decode {
-    background-color: #6F6;
+    background-color: var(--decode-box-bg);
 }
 
 .execute {
-    background-color: #88F;
+    background-color: var(--execute-bg);
 }
 
 .active {
     outline-style: solid;
-    outline-color: #f66;
+    outline-color: var(--active-outline);
     outline-width: 5px;
 }
 
@@ -195,5 +247,5 @@ a:hover {
 }
 
 .running {
-    background-color: #F77;
+    background-color: var(--fetch-bg);
 }
