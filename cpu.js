@@ -528,7 +528,7 @@ var cpu = {
         html += '<tr class="decode_row_5"><td>0101</td><td>address</td><td>Load</td></tr>';
         html += '<tr class="decode_row_6"><td>0110</td><td>address</td><td>Branch Always</td></tr>';
         html += '<tr class="decode_row_7"><td>0111</td><td>address</td><td>Branch if ACC = 0</td></tr>';
-        html += '<tr class="decode_row_8"><td>1000</td><td>address</td><td>Branch if ACC >= 0</td></tr>';
+        html += '<tr class="decode_row_8"><td>1000</td><td>address</td><td>Branch if ACC ≥ 0</td></tr>';
         html += '<tr class="decode_row_9"><td>1001</td><td>0001</td><td>Input</td></tr>';
         html += '<tr class="decode_row_9"><td>1001</td><td>0010</td><td>Output</td></tr>';
         html += '</div>';
