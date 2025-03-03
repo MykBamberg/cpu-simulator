@@ -1,5 +1,5 @@
 var cpu = {
-    step: function() {
+    step: async function() {
         function setState(nextState, stageName, description) {
 
             description = description.replace(/\*(.*?)\*/g, function(match, contents) {
@@ -256,14 +256,14 @@ var cpu = {
             case 15:
                 if((cpu.registers.cir & 0x0F) == 1) {
                     setState(20, "Execute", "The *opcode* 0001 and the *Control Bus* reads from the input device and places the input value into the *Accumulator* register");
-                    cpu.registers.acc = parseInt(prompt("Enter decimal input value:")) & 0xFF;
+                    cpu.registers.acc = parseInt(await cpu.showPrompt()) & 0xFF;
                     cpu.updateValues();
                     $('.active').removeClass('active');
                     $('#reg_acc').addClass('active');
                 }
                 if((cpu.registers.cir & 0x0F) == 2) {
                     setState(20, "Execute", "The *opcode* 0010 and the *Control Bus* causes the value of the *Accumulator* register to be sent to the output device");
-                    alert("Output: " + cpu.registers.acc);
+                    await cpu.showAlert(cpu.registers.acc);
                     $('.active').removeClass('active');
                     $('#reg_acc').addClass('active');
                 }
@@ -480,6 +480,37 @@ var cpu = {
         connect({e:CPU, h:"right", v:"93%"}, {e: RAM, h:"left"}, doubleArrow, "Control bus", labelAttributes);
     },
 
+    showAlert: function (message) {
+        var deferred = $.Deferred();
+
+        $('#output_value').text(message);
+
+        $('#modal_output_value').modal('show');
+
+        $('#modal_output_value').one('hidden.bs.modal', function() {
+            deferred.resolve();
+        });
+
+        return deferred.promise();
+    },
+
+    showPrompt: function () {
+        var deferred = $.Deferred();
+
+        $('#input_value').val('');
+
+        $('#modal_input_value').modal('show');
+
+        $('#input_value').focus();
+
+        $('#modal_input_value').one('hidden.bs.modal', function() {
+            var value = $('#input_value').val();
+            deferred.resolve(value);
+        });
+
+        return deferred.promise();
+    },
+
     init: function(jqCPU) {
         $(window).resize(cpu.updateAnnotations);
         cpu.jqCPU = jqCPU;
@@ -687,6 +718,22 @@ var cpu = {
                         jq.text(val);
                 }
             }).removeClass("value_binary value_decimal value_hex").addClass("value_" + mode);
+        });
+
+        $("#input_value").on("input", function() {
+            $(this).val($(this).val().replace(/[^-0-9]/g, ""));
+        });
+
+        $("#change_value_to").on("input", function() {
+            if ($('.value:first').hasClass('value_binary')) {
+                $(this).val($(this).val().replace(/[^01]/g, ""));
+            }
+            if ($('.value:first').hasClass('value_hex')) {
+                $(this).val($(this).val().replace(/[^0-9a-fA-F]/g, ""));
+            }
+            if ($('.value:first').hasClass('value_decimal')) {
+                $(this).val($(this).val().replace(/[^-0-9]/g, ""));
+            }
         });
 
         $('#btn_values_binary').trigger("click");

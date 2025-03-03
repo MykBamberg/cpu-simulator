@@ -55,8 +55,8 @@ h2,h3,h4 {
     margin-bottom: 1em;
 }
 
-.btn-secondary {
-    margin: 2px 0px 2px 0px;
+textarea {
+    resize: none;
 }
 
 .box {
