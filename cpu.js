@@ -235,8 +235,9 @@ var cpu = {
             //The *opcode* 0111 means branch if the *Accumulator* stores a value equal to 0
             case 13:
                 setState(20, "Execute", "The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a zero. If it does, the *operand* gets copied into the *Program Counter* register");
-                if(cpu.registers.acc == 0)
+                if (cpu.registers.acc == 0) {
                     cpu.registers.pc = cpu.registers.cir & 0x0F;
+                }
                 cpu.updateValues();
                 $('.active').removeClass('active');
                 $('#reg_acc,#reg_pc,#alu').addClass('active');
@@ -245,8 +246,9 @@ var cpu = {
             //The *opcode* 1000 means branch if the *Accumulator* stores a value greater than or equal to 0"
             case 14:
                 setState(20, "Execute", "The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a value greater than zero. If it does, the *operand* gets copied into the *Program Counter* register");
-                if(cpu.registers.acc >= 0)
+                if (cpu.registers.acc >= 0) {
                     cpu.registers.pc = cpu.registers.cir & 0x0F;
+                }
                 $('.active').removeClass('active');
                 cpu.updateValues();
                 $('#alu,#reg_acc,#reg_pc').addClass('active');
@@ -254,14 +256,14 @@ var cpu = {
 
             //The *opcode* 1001 means either input or output, depending on the *operand*"
             case 15:
-                if((cpu.registers.cir & 0x0F) == 1) {
+                if ((cpu.registers.cir & 0x0F) == 1) {
                     setState(20, "Execute", "The *opcode* 0001 and the *Control Bus* reads from the input device and places the input value into the *Accumulator* register");
                     cpu.registers.acc = parseInt(await cpu.showPrompt()) & 0xFF;
                     cpu.updateValues();
                     $('.active').removeClass('active');
                     $('#reg_acc').addClass('active');
                 }
-                if((cpu.registers.cir & 0x0F) == 2) {
+                if ((cpu.registers.cir & 0x0F) == 2) {
                     setState(20, "Execute", "The *opcode* 0010 and the *Control Bus* causes the value of the *Accumulator* register to be sent to the output device");
                     await cpu.showAlert(cpu.registers.acc);
                     $('.active').removeClass('active');
@@ -273,7 +275,7 @@ var cpu = {
                 setState(0, "Execute", "The *Control Unit* checks for interrupts and either branches to the relevant interrupt service routine or starts the cycle again.");
                 break;
         }
-        if(cpu.running) {
+        if (cpu.running) {
             cpu.nextTimeout = setTimeout(cpu.step, cpu.runDelay);
         }
     },
@@ -309,8 +311,9 @@ var cpu = {
 
     bin2dec: function(bin) {
         var v = parseInt(bin, 2) & 0xFF;
-        if(v >= 128)
+        if (v >= 128) {
             v -= 256;
+        }
         return v;
     },
 
@@ -320,8 +323,9 @@ var cpu = {
 
     hex2dec: function(hex) {
         var v = parseInt(hex, 16) & 0xFF;
-        if(v >= 128)
+        if (v >= 128) {
             v -= 256;
+        }
         return v;
     },
 
@@ -341,10 +345,10 @@ var cpu = {
         var regNames = Object.keys(cpu.registers);
 
         function writeValue(val, jqDest) {
-            if(jqDest.hasClass("value_binary")) {
+            if (jqDest.hasClass("value_binary")) {
                 val = cpu.dec2bin(val);
             }
-            if(jqDest.hasClass("value_hex")) {
+            if (jqDest.hasClass("value_hex")) {
                 val = cpu.dec2hex(val);
             }
             jqDest.text(val);
@@ -406,27 +410,27 @@ var cpu = {
             }
             var x1 = getX(from.e, from.h);
             var x2 = x1;
-            if(to.h) {
+            if (to.h) {
                 x2 = getX(to.e, to.h);
             }
 
             var y1 = getY(from.e, from.v);
             var y2 = y1;
-            if(to.v) {
+            if (to.v) {
                 y2 = getY(to.e, to.v);
             }
 
             var e = paper.path("M" + Math.floor(x1) + " " + Math.floor(y1) + "L" +  Math.floor(x2) + " " + Math.floor(y2));
-            if(attributes === undefined) {
+            if (attributes === undefined) {
                 attributes = {"stroke-width": 10, "arrow-end":"block-narrow-short"};
             }
             e.attr(attributes);
 
-            if(label) {
+            if (label) {
                 var x = Math.floor((x1 + x2) / 2);
                 var y = Math.floor((y1 + y2) / 2);
                 var text = paper.text(x, y, label);
-                if(labelAttributes) {
+                if (labelAttributes) {
                     text.attr(labelAttributes);
                 }
             }
@@ -520,15 +524,15 @@ var cpu = {
         var ram = [];
         var initZeros = true;
 
-        if(ram = params.replace("ram=", "")) {
-            if(ram = ram.match(/([0-9a-fA-F]{2})/g)) {
+        if (ram = params.replace("ram=", "")) {
+            if (ram = ram.match(/([0-9a-fA-F]{2})/g)) {
                 initZeros = false;
             }
         }
 
         for(var address = 0; address < 16; address++) {
             cpu.ram[address] = initZeros ? 0 : cpu.hex2dec(ram[address]);
-            html += '<tr><td id="ram_address_' + address + '" class="value value_decimal'
+            html += '<tr><td id="ram_address_' + address + '" class="value value_decimal';
             if (address == 0) html += ' current_instruction';
             html += '">' + address + '</td><td id="ram_value_' + address + '" class="value value_decimal editable" data-description="Memory address ' + address + '">' + cpu.ram[address] + '</td></tr>';
         }
@@ -570,7 +574,7 @@ var cpu = {
 
         cpu.updateAnnotations();
 
-        $('#modal_change_value').modal({ show: false})
+        $('#modal_change_value').modal({ show: false});
         $('#run_speed').change(function() {
             cpu.runDelay = $(this).val();
         });
@@ -580,7 +584,7 @@ var cpu = {
             cpu.running = false;
             clearTimeout(cpu.nextTimeout);
             cpu.registers.acc = cpu.registers.cir = cpu.registers.mar = cpu.registers.mdr = cpu.registers.pc = 0;
-            cpu.showHint("CPU registers and execution state reset to zero")
+            cpu.showHint("CPU registers and execution state reset to zero");
             $('.current_instruction').removeClass('current_instruction');
             $('#ram_address_0').addClass('current_instruction');
             $('.running').removeClass('running');
@@ -597,11 +601,11 @@ var cpu = {
             for(var address = 0; address < 16; address++) {
                 cpu.ram[address] = 0;
                 var jq = $('#ram_value_' + address);
-                if(jq.hasClass('value_decimal')) {
+                if (jq.hasClass('value_decimal')) {
                     jq.text(0);
-                } else if(jq.hasClass('value_binary')) {
+                } else if (jq.hasClass('value_binary')) {
                     jq.text("00000000");
-                } else if(jq.hasClass('value_hex')) {
+                } else if (jq.hasClass('value_hex')) {
                     jq.text("00");
                 }
             }
@@ -615,15 +619,15 @@ var cpu = {
             $('#change_value_from').text(jq.text());
             $('#change_value_to').val(jq.text());
             cpu.lastChangedValue = id;
-            $('#modal_change_value').modal('show')
+            $('#modal_change_value').modal('show');
         });
 
         $('#btn_change_value_ok').click(function() {
             function getInt(jq, val) {
-                if(jq.hasClass('value_hex')) {
+                if (jq.hasClass('value_hex')) {
                     return cpu.hex2dec(val);
                 }
-                if(jq.hasClass('value_binary')) {
+                if (jq.hasClass('value_binary')) {
                     return cpu.bin2dec(val);
                 }
                 val = parseInt(val, 10) & 0xFF;
@@ -649,7 +653,7 @@ var cpu = {
         $('#btn_step').click(cpu.step);
 
         $('#btn_run').click(function() {
-            if(cpu.running && cpu.nextTimeout) {
+            if (cpu.running && cpu.nextTimeout) {
                 cpu.running = false;
                 clearTimeout(cpu.nextTimeout);
                 $(this).removeClass('running');
@@ -698,19 +702,19 @@ var cpu = {
             $('.value').each(function(index, element) {
                 var jq = $(this);
                 var val = jq.text();
-                if(jq.hasClass("value_binary")) {
+                if (jq.hasClass("value_binary")) {
                     val = parseInt(val, 2);
                 }
-                if(jq.hasClass("value_decimal")) {
+                if (jq.hasClass("value_decimal")) {
                     val = parseInt(val, 10);
                 }
-                if(jq.hasClass("value_hex")) {
+                if (jq.hasClass("value_hex")) {
                     val = parseInt(val, 16);
                 }
                 switch(mode) {
                     case 'binary':
                         jq.text(cpu.dec2bin(val));
-                        break
+                        break;
                     case 'hex':
                         jq.text(cpu.dec2hex(val));
                         break;
