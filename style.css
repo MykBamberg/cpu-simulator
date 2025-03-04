@@ -3,9 +3,9 @@
     --text-color: #333;
     --link-hover-color: #48c;
     --border-color: #000;
-    --ram-bg: #cff;
+    --ram-bg: #8ff;
     --decode-bg: #ffc;
-    --cpu-bg: #fcc;
+    --cpu-bg: #faa;
     --alu-bg: #9bf;
     --cu-bg: #6c5;
     --hint-name-color: #c00;
@@ -52,7 +52,7 @@ a:hover {
 }
 
 h2,h3,h4 {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
 }
 
 textarea {
@@ -61,7 +61,6 @@ textarea {
 
 .box {
     padding: 10px;
-    border-radius: 3px;
     margin: 5px;
 }
 
@@ -73,7 +72,7 @@ textarea {
     width: min(30%, 400px);
     overflow-y: scroll;
     border: 2px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 0.5rem;
     margin: 10px;
     padding: 10px;
     background-color: var(--ram-bg);
@@ -81,6 +80,7 @@ textarea {
 
 .ram table {
     background-color: var(--table-bg);
+    margin-bottom: 0;
 }
 
 .decode_unit {
@@ -88,14 +88,15 @@ textarea {
     top: 20%;
     background-color: var(--decode-bg);
     border: 2px solid var(--border-color);
+    border-radius: 0.5rem;
     padding: 10px;
     overflow-y: scroll;
-    bottom: 0px;
     max-width: 50%;
 }
 
 .decode_unit table {
     background-color: var(--table-bg);
+    margin-bottom: 0;
 }
 
 #hint {
@@ -109,7 +110,7 @@ textarea {
 
 #cpu {
     position: relative;
-    height: 55em;
+    height: 50em;
 }
 
 .cpu {
@@ -120,7 +121,7 @@ textarea {
     margin: 10px;
     width: min(50%, 650px);
     border: 2px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 0.5rem;
     background-color: var(--cpu-bg);
     bottom: 0px;
 }
@@ -133,6 +134,7 @@ textarea {
     width: 30%;
     background-color: var(--table-bg);
     border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
     text-align: center;
     z-index: 200;
 }
@@ -169,6 +171,7 @@ textarea {
     display: block;
     width: 25%;
     border: 1px solid #000;
+    border-radius: 0.5rem;
 }
 
 #alu {
@@ -196,7 +199,7 @@ textarea {
 }
 
 .fetch_decode_execute {
-    border-radius: 3px;
+    border-radius: 0.3rem;
     padding: 3px;
     margin: 3px;
 }
