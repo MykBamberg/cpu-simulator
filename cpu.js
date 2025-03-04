@@ -10,7 +10,7 @@ var cpu = {
         }
         switch(cpu.state) {
             case 0:
-                setState(1, "Fetch", "The *Control Unit* copies the value in the *Program Counter* register to the *Memory Address Register* and onto the *Address Bus*");
+                setState(1, 'Fetch', 'The *Control Unit* copies the value in the *Program Counter* register to the *Memory Address Register* and onto the *Address Bus*');
                 cpu.registers.mar = cpu.registers.pc;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -20,13 +20,13 @@ var cpu = {
                 break;
 
             case 1:
-                setState(2, "Fetch", "The *Control Unit* tells the memory store to look at the address on the *Address Bus* and load the value stored there onto the *Data Bus*");
+                setState(2, 'Fetch', 'The *Control Unit* tells the memory store to look at the address on the *Address Bus* and load the value stored there onto the *Data Bus*');
                 $('.active').removeClass('active');
                 $('#ram_value_' + cpu.registers.mar).addClass('active');
                 break;
 
             case 2:
-                setState(3, "Fetch", "The *Control Unit* stores the value on the *Data Bus* into the *Memory Data Register*");
+                setState(3, 'Fetch', 'The *Control Unit* stores the value on the *Data Bus* into the *Memory Data Register*');
                 cpu.registers.mdr = cpu.ram[cpu.registers.mar];
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -34,7 +34,7 @@ var cpu = {
                 break;
 
             case 3:
-                setState(4, "Fetch", "The *Control Unit* copies the value from the *Memory Data Register* into the *Current Instruction Register*");
+                setState(4, 'Fetch', 'The *Control Unit* copies the value from the *Memory Data Register* into the *Current Instruction Register*');
                 cpu.registers.cir = cpu.registers.mdr;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -42,7 +42,7 @@ var cpu = {
                 break;
 
             case 4:
-                setState(5,"Fetch", "The *Control Unit* increments the *Program Counter*");
+                setState(5,'Fetch', 'The *Control Unit* increments the *Program Counter*');
                 cpu.registers.pc++;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -50,7 +50,7 @@ var cpu = {
                 break;
 
             case 5:
-                setState(6, "Decode", "The *Decode Unit* breaks the value in the *Current Instruction Register* into the *opcode* and *operand*.");
+                setState(6, 'Decode', 'The *Decode Unit* breaks the value in the *Current Instruction Register* into the *opcode* and *operand*.');
                 $('.active').removeClass('active');
                 $('#reg_cir,.decode_unit table').addClass('active');
                 break;
@@ -58,48 +58,54 @@ var cpu = {
             case 6:
                 var opcode = ((cpu.registers.cir & 0xff) >> 4);
                 $('.active').removeClass('active');
-                $('.decode_row_' + opcode).addClass('active');
+
+                var newActive = '.decode_row_' + opcode;
+                if (opcode == 9) {
+                    newActive += cpu.registers.cir & 1 ? '_i' : '_o';
+                }
+                $(newActive).addClass('active');
+
                 switch(opcode) {
                     case 0:
-                        setState(7, "Decode", "The *opcode* 0000 means end the program");
+                        setState(7, 'Decode', 'The *opcode* 0000 means end the program');
                         break;
 
                     case 1:
-                        setState(8, "Decode", "The *opcode* 0001 means add the value in the *Accumulator* register to the data stored in memory at the address specified by the *operand*");
+                        setState(8, 'Decode', 'The *opcode* 0001 means add the value in the *Accumulator* register to the data stored in memory at the address specified by the *operand*');
                         break;
 
                     case 2:
-                        setState(9, "Decode", "The *opcode* 0010 means subtract the value stored in memory at the address specified by the *operand* from the value in the *Accumulator* register");
+                        setState(9, 'Decode', 'The *opcode* 0010 means subtract the value stored in memory at the address specified by the *operand* from the value in the *Accumulator* register');
                         break;
 
                     case 3:
-                        setState(10, "Decode", "The *opcode* 0011 means store the value in the *Accumulator* register into memory at the address specified by the *operand*");
+                        setState(10, 'Decode', 'The *opcode* 0011 means store the value in the *Accumulator* register into memory at the address specified by the *operand*');
                         break;
 
                     case 5:
-                        setState(11, "Decode", "The *opcode* 0101 means load the value from memory (at the address specified by the *operand*) into the *Accumulator* register");
+                        setState(11, 'Decode', 'The *opcode* 0101 means load the value from memory (at the address specified by the *operand*) into the *Accumulator* register');
                         break;
 
                     case 6:
-                        setState(12, "Decode", "The *opcode* 0110 means branch (unconditionally)");
+                        setState(12, 'Decode', 'The *opcode* 0110 means branch (unconditionally)');
                         break;
 
                     case 7:
-                        setState(13, "Decode", "The *opcode* 0111 means branch if the *Accumulator* stores a value equal to 0");
+                        setState(13, 'Decode', 'The *opcode* 0111 means branch if the *Accumulator* stores a value equal to 0');
                         break;
 
                     case 8:
-                        setState(14, "Decode", "The *opcode* 1000 means branch if the *Accumulator* stores a value greater or equal to 0 (not negative)");
+                        setState(14, 'Decode', 'The *opcode* 1000 means branch if the *Accumulator* stores a value greater or equal to 0 (not negative)');
                         break;
 
                     case 9:
-                        setState(15, "Decode", "The *opcode* 1001 means either input or output, depending on the *operand*");
+                        setState(15, 'Decode', 'The *opcode* 1001 means either input or output, depending on the *operand*');
                         break;
                 }
                 break;
 
             case 7:
-                setState(7, "Execute", "The CPU has halted so the *Control Unit* doesn't fetch any more instructions");
+                setState(7, 'Execute', "The CPU has halted so the *Control Unit* doesn't fetch any more instructions");
                 $('.active').removeClass('active');
                 cpu.running = false;
                 $('.running').removeClass('running');
@@ -107,7 +113,7 @@ var cpu = {
 
             //The *opcode* 0001 means add the value in the *Accumulator* register to the data stored in memory at the address specified by the *operand*"
             case 8:
-                setState(81, "Decode", "The *Decode Unit* sends the *opcode* to the *Memory Address Register* which gets copied onto the *Address Bus*");
+                setState(81, 'Decode', 'The *Decode Unit* sends the *opcode* to the *Memory Address Register* which gets copied onto the *Address Bus*');
                 cpu.registers.mar = cpu.registers.cir & 0x0F;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -115,13 +121,13 @@ var cpu = {
                 break;
 
             case 81:
-                setState(82, "Execute", "The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*");
+                setState(82, 'Execute', 'The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*');
                 $('.active').removeClass('active');
                 $('#ram_value_' + cpu.registers.mar).addClass('active');
                 break;
 
             case 82:
-                setState(83, "Execute", "The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*");
+                setState(83, 'Execute', 'The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*');
                 cpu.registers.mdr = cpu.ram[cpu.registers.mar];
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -129,7 +135,7 @@ var cpu = {
                 break;
 
             case 83:
-                setState(0, "Execute", "The *opcode* and *Control Unit* signals the *Arithmetic Logic Unit* to add the values stored in the *Accumulator* and *Memory Data Register*s. The result gets saved back in the *Accumulator* register.");
+                setState(0, 'Execute', 'The *opcode* and *Control Unit* signals the *Arithmetic Logic Unit* to add the values stored in the *Accumulator* and *Memory Data Register*s. The result gets saved back in the *Accumulator* register.');
                 cpu.registers.acc += cpu.registers.mdr;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -138,7 +144,7 @@ var cpu = {
 
             //"The *opcode* 0010 means subtract the value stored in memory at the address specified by the *operand* from the value in the *Accumulator* register"
             case 9:
-                setState(91, "Decode", "The *Decode Unit* sends the *opcode* to the *Memory Address Register* which gets copied onto the *Address Bus*");
+                setState(91, 'Decode', 'The *Decode Unit* sends the *opcode* to the *Memory Address Register* which gets copied onto the *Address Bus*');
                 cpu.registers.mar = cpu.registers.cir & 0x0F;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -146,13 +152,13 @@ var cpu = {
                 break;
 
             case 91:
-                setState(92, "Execute", "The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*");
+                setState(92, 'Execute', 'The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*');
                 $('.active').removeClass('active');
                 $('#ram_value_' + cpu.registers.mar).addClass('active');
                 break;
 
             case 92:
-                setState(93, "Execute", "The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*");
+                setState(93, 'Execute', 'The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*');
                 $('.active').removeClass('active');
                 $('#reg_mdr').addClass('active');
                 cpu.registers.mdr = cpu.ram[cpu.registers.mar];
@@ -160,7 +166,7 @@ var cpu = {
                 break;
 
             case 93:
-                setState(0, "Execute", "The *opcode* and *Control Unit* signals the *Arithmetic Logic Unit* to subtract the values stored in the *Memory Data Register* from the value stored in the *Accumulator* register. The result gets saved back in the *Accumulator* register.");
+                setState(0, 'Execute', 'The *opcode* and *Control Unit* signals the *Arithmetic Logic Unit* to subtract the values stored in the *Memory Data Register* from the value stored in the *Accumulator* register. The result gets saved back in the *Accumulator* register.');
                 cpu.registers.acc = cpu.registers.acc - cpu.registers.mdr;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -169,7 +175,7 @@ var cpu = {
 
             //"The *opcode* 0011 means store the value in the *Accumulator* register into memory at the address specified by the *operand*"
             case 10:
-                setState(101, "Decode", "The *opcode* and *Control Unit* sends the value stored in the *Accumulator* register to the *Memory Data Register* which gets copied on to the *Data Bus*");
+                setState(101, 'Decode', 'The *opcode* and *Control Unit* sends the value stored in the *Accumulator* register to the *Memory Data Register* which gets copied on to the *Data Bus*');
                 cpu.registers.mdr = cpu.registers.acc;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -177,7 +183,7 @@ var cpu = {
                 break;
 
             case 101:
-                setState(102, "Decode", "The *Decode Unit* sends the *operand* to the *Memory Address Register* which gets copied onto the *Address Bus*");
+                setState(102, 'Decode', 'The *Decode Unit* sends the *operand* to the *Memory Address Register* which gets copied onto the *Address Bus*');
                 cpu.registers.mar = cpu.registers.cir & 0x0F;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -185,7 +191,7 @@ var cpu = {
                 break;
 
             case 102:
-                setState(0, "Execute", "The *Control Unit* tells the memory store to store the value on the *Data Bus* into the address on the *Address Bus*");
+                setState(0, 'Execute', 'The *Control Unit* tells the memory store to store the value on the *Data Bus* into the address on the *Address Bus*');
                 cpu.ram[cpu.registers.mar] = cpu.registers.mdr;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -194,7 +200,7 @@ var cpu = {
 
             //"The *opcode* 0101 means load the value from memory (at the address specified by the *operand*) into the *Accumulator* register"
             case 11:
-                setState(111, "Decode", "The *Decode Unit* sends the *operand* to the *Memory Address Register* which gets copied onto the *Address Bus*");
+                setState(111, 'Decode', 'The *Decode Unit* sends the *operand* to the *Memory Address Register* which gets copied onto the *Address Bus*');
                 cpu.registers.mar = cpu.registers.cir & 0x0F;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -202,13 +208,13 @@ var cpu = {
                 break;
 
             case 111:
-                setState(112, "Execute", "The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*");
+                setState(112, 'Execute', 'The *Control Unit* tells the memory store to look at the address on the *Address Bus* and place that value on the *Data Bus*');
                 $('.active').removeClass('active');
                 $('#ram_value_' + cpu.registers.mar).addClass('active');
                 break;
 
             case 112:
-                setState(113, "Execute", "The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*");
+                setState(113, 'Execute', 'The *Control Unit* copies the value on the *Data Bus* into the *Memory Data Register*');
                 cpu.registers.mdr = cpu.ram[cpu.registers.mar];
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -216,7 +222,7 @@ var cpu = {
                 break;
 
             case 113:
-                setState(20, "Execute", "The *opcode* and *Control Unit* sends the value in the *Memory Data Register* to the *Accumulator* register.");
+                setState(20, 'Execute', 'The *opcode* and *Control Unit* sends the value in the *Memory Data Register* to the *Accumulator* register.');
                 cpu.registers.acc = cpu.registers.mdr;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -225,7 +231,7 @@ var cpu = {
 
             //The *opcode* 0110 means branch (unconditionally)
             case 12:
-                setState(20, "Execute", "The *operand* gets stored in the *Program Counter*");
+                setState(20, 'Execute', 'The *operand* gets stored in the *Program Counter*');
                 cpu.registers.pc = cpu.registers.cir & 0x0F;
                 cpu.updateValues();
                 $('.active').removeClass('active');
@@ -234,7 +240,7 @@ var cpu = {
 
             //The *opcode* 0111 means branch if the *Accumulator* stores a value equal to 0
             case 13:
-                setState(20, "Execute", "The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a zero. If it does, the *operand* gets copied into the *Program Counter* register");
+                setState(20, 'Execute', 'The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a zero. If it does, the *operand* gets copied into the *Program Counter* register');
                 if (cpu.registers.acc == 0) {
                     cpu.registers.pc = cpu.registers.cir & 0x0F;
                 }
@@ -245,7 +251,7 @@ var cpu = {
 
             //The *opcode* 1000 means branch if the *Accumulator* stores a value greater than or equal to 0"
             case 14:
-                setState(20, "Execute", "The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a value greater than zero. If it does, the *operand* gets copied into the *Program Counter* register");
+                setState(20, 'Execute', 'The *Control Unit* and *opcode* makes the *Arithmetic Logic Unit* check to see if the *Accumulator* register contains a value greater than zero. If it does, the *operand* gets copied into the *Program Counter* register');
                 if (cpu.registers.acc >= 0) {
                     cpu.registers.pc = cpu.registers.cir & 0x0F;
                 }
@@ -257,14 +263,14 @@ var cpu = {
             //The *opcode* 1001 means either input or output, depending on the *operand*"
             case 15:
                 if ((cpu.registers.cir & 0x0F) == 1) {
-                    setState(20, "Execute", "The *opcode* 0001 and the *Control Bus* reads from the input device and places the input value into the *Accumulator* register");
+                    setState(20, 'Execute', 'The *opcode* 0001 and the *Control Bus* reads from the input device and places the input value into the *Accumulator* register');
                     cpu.registers.acc = parseInt(await cpu.showPrompt()) & 0xFF;
                     cpu.updateValues();
                     $('.active').removeClass('active');
                     $('#reg_acc').addClass('active');
                 }
                 if ((cpu.registers.cir & 0x0F) == 2) {
-                    setState(20, "Execute", "The *opcode* 0010 and the *Control Bus* causes the value of the *Accumulator* register to be sent to the output device");
+                    setState(20, 'Execute', 'The *opcode* 0010 and the *Control Bus* causes the value of the *Accumulator* register to be sent to the output device');
                     await cpu.showAlert(cpu.registers.acc);
                     $('.active').removeClass('active');
                     $('#reg_acc').addClass('active');
@@ -272,7 +278,7 @@ var cpu = {
                 break;
 
             case 20:
-                setState(0, "Execute", "The *Control Unit* checks for interrupts and either branches to the relevant interrupt service routine or starts the cycle again.");
+                setState(0, 'Execute', 'The *Control Unit* checks for interrupts and either branches to the relevant interrupt service routine or starts the cycle again.');
                 break;
         }
         if (cpu.running) {
@@ -294,7 +300,7 @@ var cpu = {
 
     pad: function(val, length) {
         while(val.length < length) {
-            val = "0" + val;
+            val = '0' + val;
         }
         return val;
     },
@@ -345,10 +351,10 @@ var cpu = {
         var regNames = Object.keys(cpu.registers);
 
         function writeValue(val, jqDest) {
-            if (jqDest.hasClass("value_binary")) {
+            if (jqDest.hasClass('value_binary')) {
                 val = cpu.dec2bin(val);
             }
-            if (jqDest.hasClass("value_hex")) {
+            if (jqDest.hasClass('value_hex')) {
                 val = cpu.dec2hex(val);
             }
             jqDest.text(val);
@@ -356,7 +362,7 @@ var cpu = {
 
         for(var i = 0; i < regNames.length; i++) {
             var val = cpu.registers[regNames[i]];
-            var jqDest = $('#reg_' + regNames[i] + "_val");
+            var jqDest = $('#reg_' + regNames[i] + '_val');
             writeValue(val, jqDest);
         }
 
@@ -374,40 +380,45 @@ var cpu = {
     },
 
     updateAnnotations: function() {
-        var d = $('#drawing').html("");
+        var d = $('#drawing').html('');
         var w = d.width();
         var h = d.height();
-        var paper = Raphael("drawing", w, h);
+        var paper = Raphael('drawing', w, h);
         paper.clear();
 
         function connect(from, to, attributes, label, labelAttributes) {
             function getX(i, a) {
+                var rect = i[0].getBoundingClientRect();
+                var offset = -$('#cpu')[0].getBoundingClientRect().left - $('#cpu').css('padding').replace('px', '');
                 switch(a){
                     case 'left':
-                        return i.position().left;
+                        return rect.left + offset;
                     case 'right':
-                        return i.position().left + i.outerWidth(true);
+                        return rect.right + offset;
                     case 'middle':
-                        return i.position().left + (i.outerWidth(true) / 2);
+                        return (rect.left + rect.right) / 2 + offset;
                     default:
-                        var percentage = parseInt(a.replace("%", ""));
-                        return i.position().left + (i.outerWidth(true) * percentage / 100);
+                        var percentage = parseInt(a.replace('%', ''));
+                        return rect.left + (rect.width * percentage / 100) + offset;
                 }
             }
 
             function getY(i, a) {
-                switch(a) {
+                var rect = i[0].getBoundingClientRect();
+                var offset = -$('#cpu')[0].getBoundingClientRect().top - $('#cpu').css('padding').replace('px', '');
+                switch(a){
                     case 'top':
-                        return i.position().top;
+                        return rect.top + offset;
                     case 'bottom':
-                        return i.position().top + i.outerHeight(true);
+                        return rect.bottom + offset;
                     case 'middle':
-                        return i.position().top + (i.outerHeight(true) / 2);
+                        return (rect.top + rect.bottom) / 2 + offset;
                     default:
-                        var percentage = parseInt(a.replace("%", ""));
-                        return i.position().top + (i.outerHeight(true) * percentage / 100);
+                        var percentage = parseInt(a.replace('%', ''));
+                        return rect.top + (rect.bottom * percentage / 100) + offset;
                 }
             }
+
             var x1 = getX(from.e, from.h);
             var x2 = x1;
             if (to.h) {
@@ -420,10 +431,7 @@ var cpu = {
                 y2 = getY(to.e, to.v);
             }
 
-            var e = paper.path("M" + Math.floor(x1) + " " + Math.floor(y1) + "L" +  Math.floor(x2) + " " + Math.floor(y2));
-            if (attributes === undefined) {
-                attributes = {"stroke-width": 10, "arrow-end":"block-narrow-short"};
-            }
+            var e = paper.path('M' + Math.floor(x1) + ' ' + Math.floor(y1) + 'L' +  Math.floor(x2) + ' ' + Math.floor(y2));
             e.attr(attributes);
 
             if (label) {
@@ -442,46 +450,48 @@ var cpu = {
         var MDR = $('#reg_mdr');
         var CIR = $('#reg_cir');
         var ALU = $('#alu');
+        var CU = $('#cu');
         var ACC = $('#reg_acc');
-        var CPU = $('.cpu');
         var RAM = $('.ram');
 
         const darkModeColors = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         var doubleArrow = {
-            "stroke-width": 8,
-            "stroke": darkModeColors ? "#999" : "#666",
-            "arrow-end": "block",
-            "arrow-start": "block",
-            "stroke-linecap": "round"
+            'stroke-width': 8,
+            'stroke': darkModeColors ? '#999' : '#666',
+            'arrow-end': 'block',
+            'arrow-start': 'block',
+            'stroke-linecap': 'round'
         };
 
         var singleArrow = { ...doubleArrow };
-        delete singleArrow["arrow-start"];
+        delete singleArrow['arrow-start'];
         var reverseArrow = { ...doubleArrow };
-        delete reverseArrow["arrow-end"];
+        delete reverseArrow['arrow-end'];
 
-        connect({e:ALU, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, reverseArrow);
-        connect({e:PC, h:"right", v:"middle"}, {e:MAR, h:"left", v:"middle"}, singleArrow);
-        connect({e:PC, h:"middle", v:"bottom"}, {e:decodeUnit, v:"top"}, reverseArrow);
-        connect({e:decodeUnit, h:"right", v:"top"}, {e:MAR, h:"left", v:"bottom"}, singleArrow);
-        connect({e:MDR, h:"middle", v:"bottom"}, {e:CIR, h:"middle", v:"top"}, singleArrow);
-        connect({e:CIR, h:"left", v:"middle"}, {e:decodeUnit, h:"right"}, singleArrow);
-        connect({e:ALU, h:"middle", v:"bottom"}, {e:MDR, v:"top"}, reverseArrow);
-        connect({e:ALU, h:"middle", v:"top"}, {e:ACC, v:"bottom"}, doubleArrow);
-        connect({e:MDR, h:"80%", v:"top"}, {e:ACC, h:"80%", v:"bottom"}, doubleArrow);
+        connect({e:ALU, h:'left', v:'middle'}, {e:decodeUnit, h:'right'}, reverseArrow);
+        connect({e:PC, h:'right', v:'middle'}, {e:MAR, h:'left', v:'middle'}, singleArrow);
+        connect({e:PC, h:'middle', v:'bottom'}, {e:decodeUnit, v:'top'}, reverseArrow);
+        connect({e:decodeUnit, h:'right', v:'top'}, {e:MAR, h:'left', v:'bottom'}, singleArrow);
+        connect({e:MDR, h:'middle', v:'bottom'}, {e:CIR, h:'middle', v:'top'}, singleArrow);
+        connect({e:CIR, h:'left', v:'middle'}, {e:decodeUnit, h:'right'}, singleArrow);
+        connect({e:ALU, h:'middle', v:'bottom'}, {e:MDR, v:'top'}, reverseArrow);
+        connect({e:ALU, h:'middle', v:'top'}, {e:ACC, v:'bottom'}, doubleArrow);
+        connect({e:MDR, h:'80%', v:'top'}, {e:ACC, h:'80%', v:'bottom'}, doubleArrow);
 
-        singleArrow["stroke"] = doubleArrow["stroke"] = darkModeColors ? "#825" : "#f66";
-        singleArrow["stroke-width"] = doubleArrow["stroke-width"] = 18;
+        singleArrow['stroke'] = doubleArrow['stroke'] = darkModeColors ? '#825' : '#f66';
+        singleArrow['stroke-width'] = doubleArrow['stroke-width'] = 18;
 
         const labelAttributes = {
-            "font-size": "16px",
-            "fill": darkModeColors ? "#eee" : "#333"
+            'font-family': 'Roboto Mono',
+            'font-weight': 'bold',
+            'font-size': '16px',
+            'fill': darkModeColors ? '#eee' : '#333'
         };
 
-        connect({e:CPU, h:"right", v:"5%"}, {e: RAM, h:"left"}, singleArrow, "Address bus", labelAttributes);
-        connect({e:CPU, h:"right", v:"56%"}, {e: RAM, h:"left"}, doubleArrow, "Data bus", labelAttributes);
-        connect({e:CPU, h:"right", v:"93%"}, {e: RAM, h:"left"}, doubleArrow, "Control bus", labelAttributes);
+        connect({e:MAR, h:'right', v:'middle'}, {e: RAM, h:'left'}, singleArrow, 'Address bus', labelAttributes);
+        connect({e:MDR, h:'right', v:'middle'}, {e: RAM, h:'left'}, doubleArrow, 'Data bus', labelAttributes);
+        connect({e:CU, h:'right', v:'middle'}, {e: RAM, h:'left'}, doubleArrow, 'Control bus', labelAttributes);
     },
 
     showAlert: function (message) {
@@ -524,7 +534,7 @@ var cpu = {
         var ram = [];
         var initZeros = true;
 
-        if (ram = params.replace("ram=", "")) {
+        if (ram = params.replace('ram=', '')) {
             if (ram = ram.match(/([0-9a-fA-F]{2})/g)) {
                 initZeros = false;
             }
@@ -545,11 +555,11 @@ var cpu = {
         function getRegisterHtml(name, value, desc) {
             return '<div class="register" id="reg_' + name.toLowerCase()+'"><div class="reg_name">' + name + '</div><div id="reg_' + name.toLowerCase() + '_val" class="reg_val value value_decimal editable" data-description="' + desc + '">' + value + '</div></div>';
         }
-        html += getRegisterHtml('PC', 0, "Program Counter");
-        html += getRegisterHtml('MAR', 0, "Memory Address Register");
-        html += getRegisterHtml('MDR', 0, "Memory Data Register");
-        html += getRegisterHtml('ACC', 0, "Accumulator");
-        html += getRegisterHtml('CIR', 0, "Current Instruction Register");
+        html += getRegisterHtml('PC', 0, 'Program Counter');
+        html += getRegisterHtml('MAR', 0, 'Memory Address Register');
+        html += getRegisterHtml('MDR', 0, 'Memory Data Register');
+        html += getRegisterHtml('ACC', 0, 'Accumulator');
+        html += getRegisterHtml('CIR', 0, 'Current Instruction Register');
 
         html += '<div id="alu">ALU</div>';
         html += '<div id="cu">CU</div>';
@@ -564,8 +574,8 @@ var cpu = {
         html += '<tr class="decode_row_6"><td>0110</td><td>address</td><td>Branch Always</td></tr>';
         html += '<tr class="decode_row_7"><td>0111</td><td>address</td><td>Branch if ACC = 0</td></tr>';
         html += '<tr class="decode_row_8"><td>1000</td><td>address</td><td>Branch if ACC ≥ 0</td></tr>';
-        html += '<tr class="decode_row_9"><td>1001</td><td>0001</td><td>Input</td></tr>';
-        html += '<tr class="decode_row_9"><td>1001</td><td>0010</td><td>Output</td></tr>';
+        html += '<tr class="decode_row_9_i"><td>1001</td><td>0001</td><td>Input</td></tr>';
+        html += '<tr class="decode_row_9_o"><td>1001</td><td>0010</td><td>Output</td></tr>';
         html += '</div>';
 
         html += '</div>';
@@ -584,7 +594,7 @@ var cpu = {
             cpu.running = false;
             clearTimeout(cpu.nextTimeout);
             cpu.registers.acc = cpu.registers.cir = cpu.registers.mar = cpu.registers.mdr = cpu.registers.pc = 0;
-            cpu.showHint("CPU registers and execution state reset to zero");
+            cpu.showHint('CPU registers and execution state reset to zero');
             $('.current_instruction').removeClass('current_instruction');
             $('#ram_address_0').addClass('current_instruction');
             $('.running').removeClass('running');
@@ -597,16 +607,16 @@ var cpu = {
         }, 5000);
 
         $('#btn_reset_ram').click(function() {
-            cpu.showHint("All memory store values set to zero");
+            cpu.showHint('All memory store values set to zero');
             for(var address = 0; address < 16; address++) {
                 cpu.ram[address] = 0;
                 var jq = $('#ram_value_' + address);
                 if (jq.hasClass('value_decimal')) {
                     jq.text(0);
                 } else if (jq.hasClass('value_binary')) {
-                    jq.text("00000000");
+                    jq.text('00000000');
                 } else if (jq.hasClass('value_hex')) {
-                    jq.text("00");
+                    jq.text('00');
                 }
             }
         });
@@ -615,7 +625,7 @@ var cpu = {
             var id = e.currentTarget.id;
 
             var jq = $('#' + id);
-            $('#modal_change_value_title').text(jq.data("description"));
+            $('#modal_change_value_title').text(jq.data('description'));
             $('#change_value_from').text(jq.text());
             $('#change_value_to').val(jq.text());
             cpu.lastChangedValue = id;
@@ -636,7 +646,7 @@ var cpu = {
 
             var jq = $('#' + cpu.lastChangedValue);
             var value = $('#change_value_to').val();
-            var parts = cpu.lastChangedValue.split("_");
+            var parts = cpu.lastChangedValue.split('_');
             switch(parts[0]) {
                 case 'ram':
                     var address = parseInt(parts[2]);
@@ -653,6 +663,8 @@ var cpu = {
         $('#btn_step').click(cpu.step);
 
         $('#btn_run').click(function() {
+            $('#run_speed').change()
+
             if (cpu.running && cpu.nextTimeout) {
                 cpu.running = false;
                 clearTimeout(cpu.nextTimeout);
@@ -675,12 +687,12 @@ var cpu = {
             for(var i = 0; i < cpu.ram.length; i++) {
                 bytes.push(cpu.dec2hex(cpu.ram[i]));
             }
-            var hex = bytes.join(" ");
+            var hex = bytes.join(' ');
             $('#export_hex').val(hex).focus().select();
         });
 
         $('#btn_import').click(function() {
-            var bytes = $('#export_hex').val().split(" ");
+            var bytes = $('#export_hex').val().split(' ');
             for(var i = 0; i < bytes.length && i < cpu.ram.length; i++) {
                 cpu.ram[i] = cpu.hex2dec(bytes[i]);
             }
@@ -688,27 +700,27 @@ var cpu = {
         });
 
         $('#btn_export').click(function() {
-            var bytes = $('#export_hex').val().replace(/ /g, "");
-            window.location.search = "?ram=" + bytes;
+            var bytes = $('#export_hex').val().replace(/ /g, '');
+            window.location.search = '?ram=' + bytes;
         });
 
         $('.btn_values').click(function(e) {
-            const mode = e.currentTarget.id.split("_")[2];
+            const mode = e.currentTarget.id.split('_')[2];
 
-            if (!["binary", "hex", "decimal"].includes(mode)) {
+            if (!['binary', 'hex', 'decimal'].includes(mode)) {
                 return;
             }
 
             $('.value').each(function(index, element) {
                 var jq = $(this);
                 var val = jq.text();
-                if (jq.hasClass("value_binary")) {
+                if (jq.hasClass('value_binary')) {
                     val = parseInt(val, 2);
                 }
-                if (jq.hasClass("value_decimal")) {
+                if (jq.hasClass('value_decimal')) {
                     val = parseInt(val, 10);
                 }
-                if (jq.hasClass("value_hex")) {
+                if (jq.hasClass('value_hex')) {
                     val = parseInt(val, 16);
                 }
                 switch(mode) {
@@ -721,31 +733,31 @@ var cpu = {
                     case 'decimal':
                         jq.text(val);
                 }
-            }).removeClass("value_binary value_decimal value_hex").addClass("value_" + mode);
+            }).removeClass('value_binary value_decimal value_hex').addClass('value_' + mode);
         });
 
-        $("#input_value").on("input", function() {
-            $(this).val($(this).val().replace(/[^-0-9]/g, ""));
+        $('#input_value').on('input', function() {
+            $(this).val($(this).val().replace(/[^-0-9]/g, ''));
         });
 
-        $("#change_value_to").on("input", function() {
+        $('#change_value_to').on('input', function() {
             if ($('.value:first').hasClass('value_binary')) {
-                $(this).val($(this).val().replace(/[^01]/g, ""));
+                $(this).val($(this).val().replace(/[^01]/g, ''));
             }
             if ($('.value:first').hasClass('value_hex')) {
-                $(this).val($(this).val().replace(/[^0-9a-fA-F]/g, ""));
+                $(this).val($(this).val().replace(/[^0-9a-fA-F]/g, ''));
             }
             if ($('.value:first').hasClass('value_decimal')) {
-                $(this).val($(this).val().replace(/[^-0-9]/g, ""));
+                $(this).val($(this).val().replace(/[^-0-9]/g, ''));
             }
         });
 
-        $('#btn_values_binary').trigger("click");
+        $('#btn_values_binary').trigger('click');
     }
 };
 
 $(function() {
-    cpu.init("#cpu");
+    cpu.init('#cpu');
 });
 
 $(function() {
