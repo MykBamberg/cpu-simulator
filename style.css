@@ -194,6 +194,11 @@ textarea {
     z-index: 100;
 }
 
+#output_value {
+    text-align: center;
+    margin-bottom: 0;
+}
+
 .edit-text {
     text-align: center;
 }
