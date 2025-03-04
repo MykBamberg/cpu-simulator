@@ -528,7 +528,7 @@ var cpu = {
     init: function(jqCPU) {
         $(window).resize(cpu.updateAnnotations);
         cpu.jqCPU = jqCPU;
-        var html ='<div id="drawing"></div><div class="ram"><h3><i class="fa fa-list"></i> RAM</h3>';
+        var html ='<div id="drawing"></div><div class="ram"><h3><i class="fa-solid fa-memory"></i> RAM</h3>';
         html += '<table class="table table-fixed table-striped table-hover"><thead><tr><th>Address</th><th>Value</th></tr></thead>';
         var params = window.location.search.substr(1);
         var ram = [];
