@@ -14,7 +14,6 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" integrity="sha512-3P8rXCuGJdNZOnUx/03c1jOTnMn3rP63nBip5gOP2qmUh5YAdVAvFZ1E+QLZZbC1rtMrQb+mah3AfYW11RUrWA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js" integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script type="text/javascript" src="cpu.js"></script>
@@ -69,7 +68,78 @@
             <span id="hint_text">Press the step button to see each stage of the fetch, decode execute cycle</span>
         </div>
 
-        <div id="cpu" class="box"></div>
+        <div id="cpu" class="box">
+            <div id="drawing"></div>
+            <div class="ram">
+                <h3><i class="fa-solid fa-memory"></i> RAM</h3>
+                <table class="table table-fixed table-striped table-hover" id="ram_table"></table>
+            </div>
+            <div class="cpu">
+                <h3><i class="fa fa-microchip"></i> CPU</h3>
+                <div id="alu">ALU</div>
+                <div id="cu">CU</div>
+                <div class="register" id="reg_pc">
+                    <div class="reg_name">PC</div>
+                    <div id="reg_pc_val" class="reg_val value value_decimal editable" data-description="Program Counter">0</div>
+                </div>
+                <div class="register" id="reg_mar">
+                    <div class="reg_name">MAR</div>
+                    <div id="reg_mar_val" class="reg_val value value_decimal editable" data-description="Memory Address Register">0</div>
+                </div>
+                <div class="register" id="reg_mdr">
+                    <div class="reg_name">MDR</div>
+                    <div id="reg_mdr_val" class="reg_val value value_decimal editable" data-description="Memory Data Register">0</div>
+                </div>
+                <div class="register" id="reg_acc">
+                    <div class="reg_name">ACC</div>
+                    <div id="reg_acc_val" class="reg_val value value_decimal editable" data-description="Accumulator">0</div>
+                </div>
+                <div class="register" id="reg_cir">
+                    <div class="reg_name">CIR</div>
+                    <div id="reg_cir_val" class="reg_val value value_decimal editable" data-description="Current Instruction Register">0</div>
+                </div>
+                <div class="decode_unit">
+                    <h4><i class="fa fa-info-circle"></i> Decode unit</h4>
+                        <table class="table table-fixed table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Opcode</th><th>Operand</th><th>Instruction</th>
+                                </tr>
+                            </thead>
+                            <tr class="decode_row_0">
+                                <td>0000</td><td>0000</td><td>End</td>
+                            </tr>
+                            <tr class="decode_row_1">
+                                <td>0001</td><td>address</td><td>Add</td>
+                            </tr>
+                            <tr class="decode_row_2">
+                                <td>0010</td><td>address</td><td>Subtract</td>
+                            </tr>
+                            <tr class="decode_row_3">
+                                <td>0011</td><td>address</td><td>Store</td>
+                            </tr>
+                            <tr class="decode_row_5">
+                                <td>0101</td><td>address</td><td>Load</td>
+                            </tr>
+                            <tr class="decode_row_6">
+                                <td>0110</td><td>address</td><td>Branch Always</td>
+                            </tr>
+                            <tr class="decode_row_7">
+                                <td>0111</td><td>address</td><td>Branch if ACC = 0</td>
+                            </tr>
+                            <tr class="decode_row_8">
+                                <td>1000</td><td>address</td><td>Branch if ACC ≥ 0</td>
+                            </tr>
+                            <tr class="decode_row_9_i">
+                                <td>1001</td><td>0001</td><td>Input</td>
+                            </tr>
+                            <tr class="decode_row_9_o">
+                                <td>1001</td><td>0010</td><td>Output</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         <div id="modal_change_value" class="modal fade" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
