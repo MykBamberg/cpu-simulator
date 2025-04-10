@@ -6,7 +6,7 @@ This is a modified version of [pddring/cpu-simulator](https://github.com/pddring
 
 You can try it out [here](https://mykbamberg.github.io/cpu-simulator/).
 
-An assembler for this CPU can be found at [MykBamberg/assembler](https://github.com/MykBamberg/assembler).
+An assembler for this CPU can be found at [MykBamberg/assembler](https://github.com/MykBamberg/assembler) or as a website at [MykBamberg/assembler-website](https://github.com/MykBamberg/assembler-website)([GitHub Pages](https://mykbamberg.github.io/assembler-website/)).
 
 ## Licensing
 
