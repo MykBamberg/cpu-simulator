@@ -110,7 +110,13 @@ textarea {
 
 #cpu {
     position: relative;
-    height: 50em;
+    height: 50rem;
+    min-width: 60rem;
+    padding: 0;
+}
+
+#cpu-wrapper {
+    overflow-y: scroll;
 }
 
 .cpu {
