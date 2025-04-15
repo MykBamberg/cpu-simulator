@@ -16,7 +16,7 @@ class CPU {
         document.addEventListener('DOMContentLoaded', () => this.init());
     }
 
-    async step() {
+    async step(loop = true) {
         const setState = (nextState, stageName, description) => {
             description = description.replace(/\*(.*?)\*/g, (_, contents) => `<span class="hint_name">${contents}</span>`);
             this.showHint(`<span class="fetch_decode_execute ${stageName.toLowerCase()}">${stageName}</span>${description}`);
@@ -275,8 +275,20 @@ class CPU {
                 break;
         }
 
-        if (this.running) {
-            this.nextTimeout = setTimeout(() => this.step(), this.runDelay);
+        if (this.running && loop) {
+            if (this.runDelay == 0) {
+                let start = performance.now();
+                while (performance.now() - start < 10) {
+                    await this.step(false);
+                    if (!this.running) {
+                        break;
+                    }
+                }
+            }
+
+            if (this.running) {
+                this.nextTimeout = setTimeout(async () => await this.step(), this.runDelay);
+            }
         }
     }
 
@@ -462,9 +474,9 @@ class CPU {
     showAlert(message) {
         return new Promise(resolve => {
             document.getElementById('output_value').textContent = message;
-            const modal = new bootstrap.Modal(document.getElementById('modal_output_value'));
-            modal.show();
-            document.getElementById('modal_output_value').addEventListener('hidden.bs.modal', () => resolve(), { once: true });
+            const modal = document.getElementById('modal_output_value');
+            new bootstrap.Modal(modal).show();
+            modal.addEventListener('hidden.bs.modal', () => resolve(), { once: true });
         });
     }
 
@@ -472,10 +484,10 @@ class CPU {
         return new Promise(resolve => {
             const inputField = document.getElementById('input_value');
             inputField.value = '';
-            const modal = new bootstrap.Modal(document.getElementById('modal_input_value'));
-            modal.show();
+            const modal = document.getElementById('modal_input_value');
+            new bootstrap.Modal(modal).show();
             inputField.focus();
-            document.getElementById('modal_input_value').addEventListener('hidden.bs.modal', () => resolve(inputField.value), { once: true });
+            modal.addEventListener('hidden.bs.modal', () => resolve(inputField.value), { once: true });
         });
     }
 
@@ -534,18 +546,20 @@ class CPU {
     }
 
     attachEventListeners() {
-        document.getElementById('btn_step').addEventListener('click', () => this.step());
-        document.getElementById('btn_run').addEventListener('click', () => {
-            if (this.running) {
+        document.getElementById('btn_step').addEventListener('click', async () => await this.step());
+        document.querySelectorAll('#btn_run, .btn_stop').forEach((e) => e.addEventListener('click', async () => {
+            if (this.running || e.classList.contains('btn_stop')) {
                 this.running = false;
                 clearTimeout(this.nextTimeout);
                 document.getElementById('btn_run').classList.remove('running')
+                document.querySelectorAll('.btn_stop').forEach((e) => e.style = 'display: none;');
             } else {
                 this.running = true;
-                this.step();
                 document.getElementById('btn_run').classList.add('running')
+                document.querySelectorAll('.btn_stop').forEach((e) => e.style = '');
+                await this.step();
             }
-        });
+        }));
 
         const modalChangeValue = document.querySelector('#modal_change_value');
 
