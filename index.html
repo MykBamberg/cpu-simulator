@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html data-bs-theme="auto">
+<html lang="en" data-bs-theme="auto">
     <head>
-        <meta property="og:title" content="CPU Simulator" />
-        <meta property="og:type" content="website" />
-        <meta property="og:description" content="Simulate and understand the fetch decode execute cycle" />
+        <meta property="og:title" content="CPU Simulator">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="Simulate and understand the Fetch-Decode-Execute Cycle">
 
         <title>CPU Simulator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/x-icon" href="favicon.ico">
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" integrity="sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
         <link rel="stylesheet" href="style.css">
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.3.0/raphael.min.js" integrity="sha512-tBzZQxySO5q5lqwLWfu8Q+o4VkTcRGOeQGVQ0ueJga4A1RKuzmAu5HXDOXLEjpbKyV7ow9ympVoa6wZLEzRzDg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script type="text/javascript" src="cpu.js"></script>
+        <script src="cpu.js"></script>
     </head>
     <body><div class="wrapper">
         <div class="box">
@@ -165,7 +165,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal_change_value_title">Input</h5>
+                        <h5 class="modal-title">Input</h5>
                     </div>
                     <div class="modal-body">
                         <input type="text" class="form-control edit-text" id="input_value" placeholder="Decimal Value">
@@ -183,7 +183,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modal_change_value_title">Output</h5>
+                        <h5 class="modal-title">Output</h5>
                     </div>
                     <div class="modal-body">
                         <h3 id="output_value"></h3>
@@ -234,7 +234,6 @@
                         </ol>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="btn_import" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-check"></i> Import</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Cancel</button>
                     </div>
                 </div>
